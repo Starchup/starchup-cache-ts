@@ -3,21 +3,31 @@
 	"version": "1.0.0",
 	"description": "Starchup Redis cache abstraction",
 	"main": "main.js",
-	"scripts":
-	{
-		"tsc": "tsc",
-		"dev": "ts-node-dev --respawn --transpileOnly ./app/app.ts"
+	"scripts": {
+		"build": "tsc",
+		"test": "ava"
 	},
 	"author": "",
 	"license": "ISC",
-	"dependencies":
-	{
+	"dependencies": {
 		"@types/node": "11.13.0",
 		"redis": "2.8.0"
 	},
-	"devDependencies":
-	{
+	"devDependencies": {
+		"@ava/typescript": "1.1.1",
+		"ava": "3.6.0",
 		"ts-node-dev": "1.0.0-pre.32",
 		"typescript": "3.3.4000"
+	},
+	"ava": {
+		"files": [
+			"test/**/*"
+		],
+		"extensions": [
+			"ts"
+		],
+		"require": [
+			"ts-node/register"
+		]
 	}
 }
