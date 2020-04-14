@@ -15,7 +15,7 @@ export class Cache
 {
     private Redis = Redis;
     private _cache: any;
-    private dbQueryDelay: number;
+    private dbQueryDelay: number = 1000;
 
     constructor(cacheHost: string, cachePort: string, dbQueryDelay: number = 1000)
     {
@@ -57,7 +57,7 @@ export class Cache
             console.error('Cache got error: ' + modelName + ' ' + JSON.stringify(err));
 
             if (retry && retry >= 10) throw err;
-            else return this.findObjs(modelName, key, value);
+            else return this.findObjs(modelName, key, value, retry ? ++retry : 1);
         });
     }
 

@@ -45,3 +45,5 @@ build/app.js
 *.txt
 .local
 *.rdb
+
+.nyc_output
