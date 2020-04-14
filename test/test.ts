@@ -93,16 +93,3 @@ test.serial('findObjs returns no filtered results when no match', async t =>
 
     t.deepEqual(result, []);
 });
-
-// test.serial('cache quits on error', async t =>
-// {
-//     const err = new Error('error');
-//     const spy = sinon.spy(redisClientStub, 'quit');
-//     const stub = sinon.stub(redisClientStub, 'on')
-//     stub.onFirstCall().yields(err);
-//     stub.onSecondCall().yields(null);
-//     const cache = new Cache();
-
-//     t.is(spy.calledOnce, true);
-// });
-
