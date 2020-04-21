@@ -1,16 +1,18 @@
 import test from 'ava';
 import sinon from 'sinon';
 import rewiremock from 'rewiremock';
+import { EventEmitter } from 'events';
 
 import { RedisStub } from './stubs/redis';
 
 const redis = new RedisStub();
 
-const redisClientStub = {
-    on: () => {},
-    get: () => {},
-    quit: () => {}
-};
+class RedisClientStub extends EventEmitter {
+    get() {}
+    quit() {}
+}
+
+const redisClientStub = new RedisClientStub();
 
 redis.createClient = () => redisClientStub;
 
@@ -92,4 +94,15 @@ test.serial('findObjs returns no filtered results when no match', async t =>
     const result = await cache.findObjs('test', 'test', 'test');
 
     t.deepEqual(result, []);
+});
+
+test.serial('cache quits on error', async t =>
+{
+    const err = new Error('error');
+    const spy = sinon.spy(redisClientStub, 'quit');
+    const stub = sinon.stub(redisClientStub, 'on');
+    stub.onFirstCall().yields(err);
+    const cache = new Cache();
+
+    t.is(spy.calledOnce, true);
 });

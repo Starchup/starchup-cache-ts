@@ -5,7 +5,7 @@
 	"main": "main.js",
 	"scripts": {
 		"build": "tsc",
-		"test": "nyc ava"
+		"test": "nyc ava --verbose"
 	},
 	"author": "",
 	"license": "ISC",
