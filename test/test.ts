@@ -28,18 +28,18 @@ test.afterEach(() =>
 
 test.serial('findObj returns a result', async t =>
 {
-    const res = 'result';
-    const stub = sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([res]));
+    const expectedResult = 'result';
+    sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([expectedResult]));
     const cache = new Cache();
-    const result = await cache.findObj('test');
+    const actualResult = await cache.findObj('test');
 
-    t.is(result, res);
+    t.is(actualResult, expectedResult);
 });
 
 test.serial('findObj throws an error', async t =>
 {
     const err = new Error('error');
-    const stub = sinon.stub(redisClientStub, 'get').yields(err);
+    sinon.stub(redisClientStub, 'get').yields(err);
     const cache = new Cache(null, null, 1);
 
     try
@@ -53,18 +53,18 @@ test.serial('findObj throws an error', async t =>
 
 test.serial('findObjs returns a result', async t =>
 {
-    const res = 'result';
-    const stub = sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([res]));
+    const expectedResult = 'result';
+    sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([expectedResult]));
     const cache = new Cache();
-    const [result] = await cache.findObjs('test');
+    const [actualResult] = await cache.findObjs('test');
 
-    t.is(result, res);
+    t.is(actualResult, expectedResult);
 });
 
 test.serial('findObjs throws an error', async t =>
 {
     const err = new Error('error');
-    const stub = sinon.stub(redisClientStub, 'get').yields(err);
+    sinon.stub(redisClientStub, 'get').yields(err);
     const cache = new Cache(null, null, 1);
 
     try
@@ -78,31 +78,31 @@ test.serial('findObjs throws an error', async t =>
 
 test.serial('findObjs returns a filtered result', async t =>
 {
-    const res = { test: 'test' }
-    const stub = sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([res]));
+    const expectedResult = { test: 'test' }
+    sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([expectedResult]));
     const cache = new Cache();
-    const [result] = await cache.findObjs('test', 'test', 'test');
+    const [actualResult] = await cache.findObjs('test', 'test', 'test');
 
-    t.deepEqual(result, res);
+    t.deepEqual(actualResult, expectedResult);
 });
 
 test.serial('findObjs returns no filtered results when no match', async t =>
 {
-    const res = { test2: 'test' }
-    const stub = sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([res]));
+    const nonExpectedResult = { test2: 'test' }
+    sinon.stub(redisClientStub, 'get').yields(null, JSON.stringify([nonExpectedResult]));
     const cache = new Cache();
-    const result = await cache.findObjs('test', 'test', 'test');
+    const actualResult = await cache.findObjs('test', 'test', 'test');
 
-    t.deepEqual(result, []);
+    t.deepEqual(actualResult, []);
 });
 
 test.serial('cache quits on error', async t =>
 {
     const err = new Error('error');
-    const spy = sinon.spy(redisClientStub, 'quit');
-    const stub = sinon.stub(redisClientStub, 'on');
-    stub.onFirstCall().yields(err);
+    const quitSpy = sinon.spy(redisClientStub, 'quit');
+    const onStub = sinon.stub(redisClientStub, 'on');
+    onStub.onFirstCall().yields(err);
     const cache = new Cache();
 
-    t.is(spy.calledOnce, true);
+    t.is(quitSpy.calledOnce, true);
 });

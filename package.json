@@ -2,10 +2,10 @@
 	"name": "starchup-cache-ts",
 	"version": "1.0.0",
 	"description": "Starchup Redis cache abstraction",
-	"main": "main.js",
+	"main": "main.ts",
 	"scripts": {
 		"build": "tsc",
-		"test": "nyc ava --verbose"
+		"test": "nyc ava"
 	},
 	"author": "",
 	"license": "ISC",
